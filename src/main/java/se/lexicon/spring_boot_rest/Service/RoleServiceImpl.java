@@ -1,6 +1,6 @@
 package se.lexicon.spring_boot_rest.Service;
 
-import net.bytebuddy.description.method.MethodDescription;
+
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,17 +40,18 @@ public class RoleServiceImpl implements RoleService {
     public RoleDto findById(Integer roleId) {
         if (roleId == null) throw new DataWasInsufficient("Data can't be null or 0");
         Optional<Role> optionalRole = roleRepository.findById(roleId);
-        if (optionalRole.isPresent()) {
+        if (!optionalRole.isPresent()) throw new DataNotFoundException("Id was not found");
             Role entity = optionalRole.get();
             return modelMapper.map(entity, RoleDto.class);
-        }
-        return null;
+
     }
 
     @Override
     public RoleDto create(RoleDto roleDto) {
         if (roleDto == null) throw new DataWasInsufficient("Data can't be null");
-        if (roleDto.getId() != 0) throw new DataWasInsufficient("Role id should not be null or zero");
+        if (roleDto.getId() == 0) throw new DataNotFoundException("Role id should not be null or zero");
+       Optional<Role> name = roleRepository.findByName(roleDto.getName());
+        if (name.isPresent()) throw new DataDuplicateException("RoleName is Taken");
         Role createdEntity = roleRepository.save(modelMapper.map(roleDto, Role.class));
         return modelMapper.map(createdEntity, RoleDto.class);
     }

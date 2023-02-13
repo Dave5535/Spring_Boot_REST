@@ -20,9 +20,9 @@ public class Role {
    @Column(updatable = false)
     private int id;
     @Column(unique = true, nullable = false)
-    private String username;
+    private String name;
 
     public Role(String name) {
-        this.username = name;
+        this.name = name;
     }
 }
