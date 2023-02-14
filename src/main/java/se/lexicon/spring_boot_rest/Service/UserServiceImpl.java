@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map<String, Object> findByUserName(String username) {
-        if (username == null) throw new DataWasInsufficient("Username was Null");
-        User user = userRepository.findByUsername(username).orElseThrow(()-> new DataNotFoundException("Data was not found"));
+        if (username == null) throw new DataWasInsufficient("UserName can't be null");
+        User user = userRepository.findByUsername(username).orElseThrow(()-> new DataNotFoundException("Name was not found"));
 
         Map<String,Object> map = new HashMap<>();
         map.put("username",user.getUsername());
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
         // step1: check the methods params
         if (userDto == null) throw new DataWasInsufficient("Data Was Null");
         if (userDto.getUsername() == null || userDto.getPassword() == null)
-            throw new DataWasInsufficient("Name or Password Was Null");
+            throw new DataWasInsufficient("Name or/and Password Was Null");
         if (userDto.getRoles()== null || userDto.getRoles().size() == 0)
             throw new DataWasInsufficient("Roles can't be null or have a size of zero");
         // step2: check the roles data
@@ -67,9 +67,8 @@ public class UserServiceImpl implements UserService {
         // step5: execute the save method of UserRepository
         User createdEntity = userRepository.save(convertedToEntity);
         // step6: convert the created entity to dto
-        UserDto convertedToDto = modelMapper.map(createdEntity,UserDto.class);
         // step7: return convertedEntity
-        return convertedToDto;
+        return modelMapper.map(createdEntity,UserDto.class);
     }
 
     @Override

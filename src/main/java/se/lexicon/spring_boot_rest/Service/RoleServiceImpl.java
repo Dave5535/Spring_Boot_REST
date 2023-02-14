@@ -28,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RoleDto> getAll() {
         List<Role> roleList = roleRepository.findAllByOrderByIdDesc();
-/*return roleList.stream()
+        /*return roleList.stream()
                 .map(role -> new RoleDto(role.getId(), role.getName()))
                 .collect(Collectors.toList());*/
         return modelMapper.map(roleList, new TypeToken<List<RoleDto>>() {
@@ -38,11 +38,11 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDto findById(Integer roleId) {
-        if (roleId == null) throw new DataWasInsufficient("Data can't be null or 0");
+        if (roleId == null  || roleId == 0) throw new DataWasInsufficient("Id must have a value above zero");
         Optional<Role> optionalRole = roleRepository.findById(roleId);
         if (!optionalRole.isPresent()) throw new DataNotFoundException("Id was not found");
-            Role entity = optionalRole.get();
-            return modelMapper.map(entity, RoleDto.class);
+        Role entity = optionalRole.get();
+        return modelMapper.map(entity, RoleDto.class);
 
     }
 
@@ -52,7 +52,7 @@ public class RoleServiceImpl implements RoleService {
         if (roleDto == null) throw new IllegalArgumentException("Data can't be null");
         if (roleDto.getId() != 0) throw new IllegalArgumentException("Role id should not be null or zero");
 
-       Optional<Role> name = roleRepository.findByName(roleDto.getName());
+        Optional<Role> name = roleRepository.findByName(roleDto.getName());
         if (name.isPresent()) throw new DataDuplicateException("RoleName is Taken");
         Role createdEntity = roleRepository.save(modelMapper.map(roleDto, Role.class));
         return modelMapper.map(createdEntity, RoleDto.class);
@@ -64,10 +64,10 @@ public class RoleServiceImpl implements RoleService {
         if (roleDto.getId() == 0) throw new IllegalArgumentException("Role id is not supposed to be zero!");
 
         if (!roleRepository.findById(roleDto.getId()).isPresent())
-            throw new DataNotFoundException("Data not found error");
+            throw new DataNotFoundException("Id has no current data attach to it");
 
         if (roleRepository.findByName(roleDto.getName()).isPresent())
-            throw new DataDuplicateException("Someone else have that Name");
+            throw new DataDuplicateException("Role-name already exist");
         roleRepository.save(modelMapper.map(roleDto, Role.class));
     }
 

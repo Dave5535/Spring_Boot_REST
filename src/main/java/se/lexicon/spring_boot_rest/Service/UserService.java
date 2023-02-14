@@ -9,7 +9,6 @@ import java.util.Map;
 
 public interface UserService {
 
-
     Map<String,Object>findByUserName(String username);
 
     UserDto register(UserDto Dto);

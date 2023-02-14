@@ -14,4 +14,5 @@ public interface RoleService {
     void update(RoleDto roleDto);
 
     void delete(Integer roleId);
+
 }
