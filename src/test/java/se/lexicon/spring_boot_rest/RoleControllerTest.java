@@ -53,7 +53,7 @@ public class RoleControllerTest {
 
     @Test
     public void test_findAll() throws Exception {
-/*
+
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/role/"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -64,14 +64,14 @@ public class RoleControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("ADMIN"));
 
- */
+
 
 
     }
 
     @Test
     public void test_createRole() throws Exception {
-      /*  String requestBodyGuest = "{ \"name\" : \"GUEST\" }";
+       String requestBodyGuest = "{ \"name\" : \"GUEST\" }";
 
         MvcResult mvcResult = mockMvc.
                 perform(MockMvcRequestBuilders.
@@ -95,7 +95,7 @@ public class RoleControllerTest {
 
         Assertions.assertEquals(expectedRoleDto, actualRoleDto); // ?
 
-       */
+
 
 
     }
