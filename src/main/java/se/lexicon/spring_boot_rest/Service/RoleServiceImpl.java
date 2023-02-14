@@ -48,8 +48,10 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDto create(RoleDto roleDto) {
-        if (roleDto == null) throw new DataWasInsufficient("Data can't be null");
-        if (roleDto.getId() == 0) throw new DataNotFoundException("Role id should not be null or zero");
+
+        if (roleDto == null) throw new IllegalArgumentException("Data can't be null");
+        if (roleDto.getId() != 0) throw new IllegalArgumentException("Role id should not be null or zero");
+
        Optional<Role> name = roleRepository.findByName(roleDto.getName());
         if (name.isPresent()) throw new DataDuplicateException("RoleName is Taken");
         Role createdEntity = roleRepository.save(modelMapper.map(roleDto, Role.class));
@@ -58,8 +60,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void update(RoleDto roleDto) {
-        if (roleDto == null) throw new DataWasInsufficient("Data can't be null");
-        if (roleDto.getId() == 0) throw new DataWasInsufficient("Role id is not supposed to be zero!");
+        if (roleDto == null) throw new IllegalArgumentException("Data can't be null");
+        if (roleDto.getId() == 0) throw new IllegalArgumentException("Role id is not supposed to be zero!");
 
         if (!roleRepository.findById(roleDto.getId()).isPresent())
             throw new DataNotFoundException("Data not found error");

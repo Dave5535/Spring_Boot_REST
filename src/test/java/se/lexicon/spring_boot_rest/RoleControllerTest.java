@@ -31,7 +31,7 @@ public class RoleControllerTest {
 
     @BeforeEach
     public void setup() throws Exception {
-        String requestBodyAdmin = "{ \"name\" : \"ADMIN\" }";
+        String requestBodyAdmin = "{ \"name\" : \"ADMIN\" }"; // creating role ->
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/role/").content(requestBodyAdmin).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
